@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Tasks - TodoList</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">TodoList</a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link active">Home</a></li>
+                <li><a href="add-task.html" class="nav-link">Add Task</a></li>
+                <li><a href="notifications.html" class="nav-link">Notifications <span class="notification-badge">3</span></a></li>
+                <li><a href="welcome.html" class="nav-link">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header>
+            <h1>My Todo List</h1>
+            <a href="add-task.html" class="add-task-btn">+</a>
+        </header>
+        
+        <ul class="task-list" id="taskList">
+            <!-- Tasks will be dynamically added here -->
+        </ul>
+        
+        <div class="empty-state" id="emptyState">
+            <h2>No tasks yet</h2>
+            <p>Add a new task to get started!</p>
+        </div>
+    </div>
+    
+    <script>
+        // DOM Elements
+        const taskList = document.getElementById('taskList');
+        const emptyState = document.getElementById('emptyState');
+        
+        // Task array to store all tasks
+        let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+        
+        // Initialize app
+        function init() {
+            renderTasks();
+        }
+        
+        // Render all tasks
+        function renderTasks() {
+            if (tasks.length === 0) {
+                emptyState.style.display = 'block';
+                taskList.innerHTML = '';
+                return;
+            }
+            
+            emptyState.style.display = 'none';
+            taskList.innerHTML = '';
+            
+            tasks.forEach(task => {
+                const li = document.createElement('li');
+                li.className = `task-item ${task.completed ? 'completed' : ''}`;
+                li.dataset.id = task.id;
+                
+                li.innerHTML = `
+                    <div class="task-content">
+                        <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''}>
+                        <div class="task-text">${task.title}</div>
+                    </div>
+                    <div class="task-actions">
+                        <button class="edit-btn" onclick="window.location.href='add-task.html?id=${task.id}'">✏️</button>
+                        <button class="delete-btn">🗑️</button>
+                    </div>
+                `;
+                
+                // Add event listeners to the task item
+                const checkbox = li.querySelector('.task-checkbox');
+                const deleteBtn = li.querySelector('.delete-btn');
+                
+                checkbox.addEventListener('change', () => toggleTaskComplete(task.id));
+                deleteBtn.addEventListener('click', () => deleteTask(task.id));
+                
+                taskList.appendChild(li);
+            });
+        }
+        
+        // Toggle task completion status
+        function toggleTaskComplete(taskId) {
+            const taskIndex = tasks.findIndex(t => t.id === taskId);
+            if (taskIndex !== -1) {
+                tasks[taskIndex].completed = !tasks[taskIndex].completed;
+                tasks[taskIndex].updatedAt = new Date().toISOString();
+                
+                saveTasks();
+                renderTasks();
+            }
+        }
+        
+        // Delete a task
+        function deleteTask(taskId) {
+            if (confirm('Are you sure you want to delete this task?')) {
+                tasks = tasks.filter(t => t.id !== taskId);
+                saveTasks();
+                renderTasks();
+            }
+        }
+        
+        // Save tasks to localStorage
+        function saveTasks() {
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+        }
+        
+        // Initialize the app
+        init();
+    </script>
+</body>
+</html>
