@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - TodoList</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="auth-container">
+        <h2 class="auth-title">Create Your Account</h2>
+        
+        <form class="auth-form">
+            <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <input type="text" id="fullName" placeholder="Enter your full name" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="Enter your email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Create a password" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
+            </div>
+            
+            <button type="submit" class="btn">Sign Up</button>
+        </form>
+        
+        <div class="auth-footer">
+            Already have an account? <a href="index.html">Log In</a>
+        </div>
+    </div>
+    
+    <script>
+        document.querySelector('.auth-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // In a real app, you would handle form submission to a server
+            // Here we'll just redirect to the home page
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>
