@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications - TodoList</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">TodoList</a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="add-task.html" class="nav-link">Add Task</a></li>
+                <li><a href="notifications.html" class="nav-link active">Notifications <span class="notification-badge">3</span></a></li>
+                <li><a href="welcome.html" class="nav-link">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header>
+            <h1>Notifications</h1>
+        </header>
+        
+        <ul class="notification-list">
+            <li class="notification-item unread">
+                <div class="notification-icon">⏰</div>
+                <div class="notification-content">
+                    <div class="notification-title">Task "Finish project report" is due soon</div>
+                    <div class="notification-message">Due in 2 hours</div>
+                    <div class="notification-time">10 minutes ago</div>
+                </div>
+            </li>
+            
+            <li class="notification-item unread">
+                <div class="notification-icon">🔔</div>
+                <div class="notification-content">
+                    <div class="notification-title">Daily reminder</div>
+                    <div class="notification-message">You have 5 pending tasks for today</div>
+                    <div class="notification-time">1 hour ago</div>
+                </div>
+            </li>
+            
+            <li class="notification-item unread">
+                <div class="notification-icon">✅</div>
+                <div class="notification-content">
+                    <div class="notification-title">Task completed</div>
+                    <div class="notification-message">"Call client" was marked as completed</div>
+                    <div class="notification-time">2 hours ago</div>
+                </div>
+            </li>
+            
+            <li class="notification-item">
+                <div class="notification-icon">📝</div>
+                <div class="notification-content">
+                    <div class="notification-title">Task updated</div>
+                    <div class="notification-message">You updated the due date for "Review documents"</div>
+                    <div class="notification-time">Yesterday</div>
+                </div>
+            </li>
+            
+            <li class="notification-item">
+                <div class="notification-icon">🎯</div>
+                <div class="notification-content">
+                    <div class="notification-title">Weekly summary</div>
+                    <div class="notification-message">You completed 12 tasks this week</div>
+                    <div class="notification-time">3 days ago</div>
+                </div>
+            </li>
+        </ul>
+        
+        <div style="text-align: center; margin-top: 30px;">
+            <button id="markAllRead" class="btn">Mark All as Read</button>
+        </div>
+    </div>
+    
+    <script>
+        // DOM Elements
+        const markAllReadBtn = document.getElementById('markAllRead');
+        const notificationItems = document.querySelectorAll('.notification-item');
+        
+        // Event Listeners
+        markAllReadBtn.addEventListener('click', function() {
+            notificationItems.forEach(item => {
+                item.classList.remove('unread');
+            });
+            
+            // Remove notification badge
+            document.querySelector('.notification-badge').style.display = 'none';
+        });
+        
+        // Individual notification click event
+        notificationItems.forEach(item => {
+            item.addEventListener('click', function() {
+                this.classList.remove('unread');
+                
+                // Update badge count
+                updateBadgeCount();
+            });
+        });
+        
+        // Update badge count
+        function updateBadgeCount() {
+            const unreadCount = document.querySelectorAll('.notification-item.unread').length;
+            const badge = document.querySelector('.notification-badge');
+            
+            if (unreadCount > 0) {
+                badge.textContent = unreadCount;
+                badge.style.display = 'inline';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
